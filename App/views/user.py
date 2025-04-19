@@ -4,7 +4,9 @@ from flask_jwt_extended import jwt_required, current_user as jwt_current_user
 from.index import index_views
 
 from App.controllers import (
-    create_user,
+    create_student,
+    create_company,
+    create_staff,
     get_all_users,
     get_all_users_json,
     jwt_required
@@ -20,8 +22,16 @@ def get_user_page():
 @user_views.route('/users', methods=['POST'])
 def create_user_action():
     data = request.form
+    role = data.get('role')
+    
+    if role == 'student':
+        create_student(data['username'], data['email'], data['password'], data['first_name'], data['last_name'])
+    elif role == 'company':
+        create_company(data['username'], data['email'], data['password'], data['company_name'])
+    elif role == 'staff':
+        create_staff(data['username'], data['email'], data['password'], data['position'])
+        
     flash(f"User {data['username']} created!")
-    create_user(data['username'], data['password'])
     return redirect(url_for('user_views.get_user_page'))
 
 @user_views.route('/api/users', methods=['GET'])
@@ -32,7 +42,15 @@ def get_users_action():
 @user_views.route('/api/users', methods=['POST'])
 def create_user_endpoint():
     data = request.json
-    user = create_user(data['username'], data['password'])
+    role = data.get('role')
+    
+    if role == 'student':
+        user = create_student(data['username'], data['email'], data['password'], data['first_name'], data['last_name'])
+    elif role == 'company':
+        user = create_company(data['username'], data['email'], data['password'], data['company_name'])
+    elif role == 'staff':
+        user = create_staff(data['username'], data['email'], data['password'], data['position'])
+        
     return jsonify({'message': f"user {user.username} created with id {user.id}"})
 
 @user_views.route('/static/users', methods=['GET'])
