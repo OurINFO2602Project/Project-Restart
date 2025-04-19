@@ -1,0 +1,56 @@
+{% extends layout.html %}
+{% block title %}Company Shortlist Page{% endblock %}
+{% block content %}
+<div class="container mt-4">
+ <div class="d-flex justify-content-between align-items-center mb-4">
+  <h2>Shortlist for {{ internship.title }}</h2>
+  <span class="badge bg-primary"> Logged in as: {{internship.company }}</span>
+   <i class="bi bi-box-arrow-right">Logout</i>
+ </div>
+ <div class="row">
+  <div class="col-md-7">
+   {% for student in shortlisted %}
+   <div class="card mb-3">
+    <div class="card-body">
+     <h5> class="card-title">{{ student.name }}</h5>
+     <p class="card-text">{{ student.degree }}
+      {% if student.gpa >= 3.8 %}(High Gpa){% endif %}
+     </p>
+     <a href="{{ url_for('company_shortlists', intership_id = internship.id, selected=student.id) }}"
+     class="btn btn-sm btn-outline-primary">View Details</a>
+    </div>
+   </div>
+   {% else %}
+   <div class="alert alert-info">
+    No students shortlisted yet
+   </div>
+   {% end for %}
+   <div class="col-md-5">
+    {% if selected_student %}
+    <div class="card">
+     <div class="card-header bg-primary text-white">
+      <h5 class="mb-0">Selected Student</h5>
+     </div>
+     <div class="card-body">
+      <h4>{{ selected_student.name }}</h4>
+      <p>Degree: {{ selected_student.degree }}</p>
+      <p>GPA: {{ selected_student.gpa }}</p>
+      <ul class="list-group list-group-flush mt-3">
+       <li class="list-group-item">
+        <strong>Email: </strong> {{ selected_student.email }}
+       </li>
+       <li class="list-group-item">
+        <strong>GPA: </strong> {{ selected_student.gpa }}
+       </li>
+       <li class="list-group-item">
+        <a href="{{ selected_student.resume_url }}" class="btn btn-sm btn-secondary">
+         View Resume</a>
+       </li>
+       </ul>
+     </div>
+   </div>
+   {% end if %}
+  </div>
+ </div>
+</div>
+{% endblock %}
