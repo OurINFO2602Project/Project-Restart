@@ -7,7 +7,7 @@ class Internship(db.Model):
   start_date = db.Column(db.String(20), nullable=False)
   end_date = db.Column(db.String(20), nullable=False)
   salary = db.Column(db.Integer, nullable=False)
-  company_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+  company_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
   company = db.relationship('Company', backref=db.backref('internships', lazy=True))
 
   def __init__(self, title, description, start_date, end_date, salary):
