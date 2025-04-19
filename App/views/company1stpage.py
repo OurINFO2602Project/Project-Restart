@@ -56,7 +56,7 @@ def view_shortlist(internship_id):
     selected_id = request.args.get('selected')
     selected = next((s for s in shortlisted if s.id == int(selected_id)), None) if selected_id else None
     
-    return render_template('company/shortlist.html',
+    return render_template('company_shortlist.html',
                         internship=internship,
                         shortlisted=shortlisted,
                         selected_student=selected)
@@ -64,7 +64,7 @@ def view_shortlist(internship_id):
 @company_routes.route('/student/<int:student_id>')
 @jwt_required()
 def view_student(student_id):
-    student = Student.query.get_or_404(student_id)
+    student = Student.query.get(student_id)
     return jsonify({
         'name': student.name,
         'degree': student.degree,
