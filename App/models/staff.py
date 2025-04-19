@@ -7,7 +7,7 @@ class Staff(User):
       'polymorphic_identity': 'staff',
   }
   
-  position = db.Column(db.String(50), nullable=False)
+  position = db.Column(db.String(50), nullable=True)
 
   def __init__(self, username, email, password, position):
     super().__init__(username, email, password)
