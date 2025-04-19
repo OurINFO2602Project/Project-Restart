@@ -7,8 +7,8 @@ class Student(User):
       'polymorphic_identity': 'student',
   }
   
-  first_name = db.Column(db.String(80), nullable=False)
-  last_name = db.Column(db.String(80), nullable=False)
+  first_name = db.Column(db.String(80), nullable=True)
+  last_name = db.Column(db.String(80), nullable=True)
 
   def __init__(self, username, email, password, first_name, last_name):
     super().__init__(username, email, password)
