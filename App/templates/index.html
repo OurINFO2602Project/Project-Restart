@@ -1,13 +1,13 @@
 {% extends "layout.html" %}
-{% block title %}Flask MVC App{% endblock %}
-{% block page %}Flask MVC App{% endblock %}
+{% block title %}Internship Platform App{% endblock %}
+{% block page %}Internship Platform App{% endblock %}
 
 {{ super() }}
 
 {% block content %}
-    <h1>Flask MVC</h1>
+    <h1>Internship Platform</h1>
     {% if is_authenticated %}
         <p> Welcome {{current_user.username}} </p>
     {% endif %}
-    <p>This is a boileplate flask application which follows the MVC pattern for structuring the project.</p>
+    <p>This is a boilerplate flask application which allows students to view and apply to available internship positions, while companies can post internships and review applications and staff users can manage listings and oversee the process.</p>
 {% endblock %}
