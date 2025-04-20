@@ -49,7 +49,8 @@
             <span>Start: {{ internship.start_date }} | End: {{ internship.end_date }}</span><br>
             <span>Salary: {{ internship.salary }}</span><br>
             <span>{{ internship.description }}</span>
-            <form method="GET" action="{{ url_for('login_landing_views.company_shortlist', internship_id=internship.id) }}" style="margin-top: 1rem;">
+            <form method="GET" action="{{ url_for('login_landing_views.company_shortlist') }}" style="margin-top: 1rem;">
+              <input type="hidden" name="internship_id" value="{{ internship.id }}">
               <button type="submit" class="btn teal">Select</button>
             </form>
           </div>

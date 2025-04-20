@@ -5,7 +5,8 @@ from .index import index_views
 from .auth import auth_views
 from .admin import setup_admin
 from flask import Blueprint, render_template, request, redirect, url_for
-from App.models import Internship, db
+from App.models import Internship, db, Application, Student, Internship
+
 
 login_landing_views = Blueprint('login_landing_views', __name__)
 
@@ -44,21 +45,18 @@ def company_home():
 @login_landing_views.route('/company/shortlist')
 def company_shortlist():
     internship_id = request.args.get('internship_id')
-    selected = request.args.get('selected')
-    internship = type('Internship', (object,), {'title': 'Software Intern', 'company': 'Acme Corp', 'id': internship_id})()
-    # Mock students
-    students = {
-        '1': type('Student', (object,), {
-            'name': 'Alice', 'degree': 'BSc Computer Science', 'gpa': 3.8, 'id': 1,
-            'email': 'alice@example.com', 'resume_url': '#'
-        })(),
-        '2': type('Student', (object,), {
-            'name': 'Bob', 'degree': 'BEng Software Engineering', 'gpa': 3.5, 'id': 2,
-            'email': 'bob@example.com', 'resume_url': '#'
-        })()
-    }
-    selected_student = students.get(selected)
-    return render_template('company_shortlist.html', internship=internship, selected_student=selected_student)
+    if not internship_id:
+        return "Internship ID required", 400
+    internship = Internship.query.get_or_404(internship_id)
+    applications = Application.query.filter_by(internship_id=internship_id).all()
+    shortlisted_students = [app.student for app in applications]
+    selected_student = shortlisted_students[0] if shortlisted_students else None
+    return render_template(
+        'company_shortlist.html',
+        internship=internship,
+        shortlisted_students=shortlisted_students,
+        selected_student=selected_student
+    )
 
 @login_landing_views.route('/staff/home', methods=['GET'])
 def staff_home():
@@ -67,6 +65,10 @@ def staff_home():
 @login_landing_views.route('/student.html')
 def student_html():
     return render_template('student.html')
+
+
+
+
 
 views = [user_views, index_views, auth_views, login_landing_views]
 # blueprints must be added to this list
