@@ -62,7 +62,28 @@ def company_shortlist():
 
 @login_landing_views.route('/staff/home', methods=['GET'])
 def staff_home():
-    return render_template('staff_home.html')
+    internships = Internship.query.all()
+    internship_id = request.args.get('internship_id')
+    selected_internship = None
+    applicants = []
+    selected_applicant = None
+
+    if internship_id:
+        selected_internship = Internship.query.get(internship_id)
+        if selected_internship:
+            applicants = Application.query.filter_by(internship_id=selected_internship.id).all()
+            applicant_id = request.args.get('applicant_id')
+            if applicant_id:
+                selected_applicant = Application.query.get(applicant_id)
+
+    return render_template(
+        'staff_home.html',
+        internships=internships,
+        selected_internship=selected_internship,
+        applicants=applicants,
+        selected_applicant=selected_applicant
+    )
+
 
 
 @login_landing_views.route('/student.html')
