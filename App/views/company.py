@@ -5,7 +5,15 @@ from App.models.internship import Internship
 from App.models.shortlist import Shortlist
 from App.models.student import Student
 
+<<<<<<< HEAD
 company_blueprint = Blueprint('company', __name__)
+=======
+from App.controllers import(
+    get_shortlisted_students,
+    get_student_details,
+    get_student_application_details
+)
+>>>>>>> 0941f3955f92ad6ffaecdb05564aa457c9175c40
 
 @company_blueprint.route('/home', methods=['GET'])
 @login_required
@@ -46,6 +54,7 @@ def get_student_details(student_id):
     
     student = Student.query.get(student_id)
     if not student:
+<<<<<<< HEAD
         return {'error': 'Student not found'}, 404
     
     application = Application.query.filter_by(
@@ -61,3 +70,27 @@ def get_student_details(student_id):
         'graduation_year': application.graduation_year if application else 0,
         'resume_url': application.resume_url if application else ''
     }
+=======
+        return jsonify({"error": "Student not found"}), 404
+        
+    return jsonify(student)
+
+@company_views.route('/api/students/<int:student_id>/details', methods=['GET'])
+@jwt_required()
+def get_student_application_details_api(student_id):
+    if current_user.type != 'company':
+        return jsonify({"error": "Unauthorized"}), 401
+
+    student_details = get_student_details(student_id)
+    if not student_details:
+        return jsonify({"error": "Student not found"}), 404
+
+    application_details = get_student_application_details(student_id)  # Fetch application-specific details
+    if not application_details:
+        return jsonify({"error": "Application details not found"}), 404
+
+    return jsonify({
+        "student": student_details,
+        "application": application_details
+    })
+>>>>>>> 0941f3955f92ad6ffaecdb05564aa457c9175c40

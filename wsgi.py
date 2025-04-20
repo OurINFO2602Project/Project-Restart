@@ -5,7 +5,7 @@ from flask.cli import with_appcontext, AppGroup
 from App.database import db, get_migrate
 from App.models import User
 from App.main import create_app
-from App.controllers import ( create_user, get_all_users_json, get_all_users, initialize )
+from App.controllers import ( create_student, create_company, create_staff, get_all_users_json, get_all_users, initialize )
 
 
 # This commands file allow you to create convenient CLI commands for testing controllers
@@ -30,11 +30,32 @@ User Commands
 user_cli = AppGroup('user', help='User object commands') 
 
 # Then define the command and any parameters and annotate it with the group (@)
-@user_cli.command("create", help="Creates a user")
-@click.argument("username", default="rob")
-@click.argument("password", default="robpass")
-def create_user_command(username, password):
-    create_user(username, password)
+@user_cli.command("create-student", help="Creates a student user")
+@click.argument("username", default="john")
+@click.argument("email", default="john@email.com")
+@click.argument("password", default="johnpass")
+@click.argument("first_name", default="John")
+@click.argument("last_name", default="Smith")
+def create_student_command(username, email, password, first_name, last_name):
+    create_student(username, email, password, first_name, last_name)
+    print(f'{username} created!')
+
+@user_cli.command("create-company", help="Creates a company user")
+@click.argument("username", default="bill")
+@click.argument("email", default="bill@email.com")
+@click.argument("password", default="billpass")
+@click.argument("company_name", default="Company")
+def create_company_command(username, email, password, company_name):
+    create_company(username, email, password, company_name)
+    print(f'{username} created!')
+
+@user_cli.command("create-staff", help="Creates a staff user")
+@click.argument("username", default="steve")
+@click.argument("email", default="steve@email.com")
+@click.argument("password", default="stevepass")
+@click.argument("position", default="admin")
+def create_staff_command(username, email, password, position):
+    create_staff(username, email, password, position)
     print(f'{username} created!')
 
 # this command will be : flask user create bob bobpass

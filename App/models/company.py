@@ -7,7 +7,7 @@ class Company(User):
       'polymorphic_identity': 'company',
   }
   
-  company_name = db.Column(db.String(120), nullable=False)
+  company_name = db.Column(db.String(120), nullable=True)
 
   def __init__(self, username, email, password, company_name):
     super().__init__(username, email, password)

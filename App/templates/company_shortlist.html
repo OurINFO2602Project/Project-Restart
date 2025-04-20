@@ -19,6 +19,9 @@
                                 <br>
                                 {{ student.degree }}
                             </a>
+                            <button class="btn waves-effect waves-light" onclick="viewApplicationDetails('{{ student.id }}')">
+                                View Details
+                            </button>
                         {% endfor %}
                     </div>
                 </div>
@@ -66,6 +69,26 @@ function showStudentDetails(studentId) {
                 <p><strong>Graduation Year:</strong> ${data.graduation_year}</p>
                 ${data.resume_url ? 
                     `<a href="${data.resume_url}" class="btn waves-effect waves-light" target="_blank">
+                        View Resume
+                    </a>` : ''
+                }
+            `;
+        });
+}
+
+function viewApplicationDetails(studentId) {
+    fetch(`/api/students/${studentId}/details`)
+        .then(response => response.json())
+        .then(data => {
+            const details = document.getElementById('studentDetails');
+            details.innerHTML = `
+                <h4>${data.student.name}</h4>
+                <p><strong>Degree:</strong> ${data.student.degree}</p>
+                <p><strong>Email:</strong> ${data.student.email}</p>
+                <p><strong>GPA:</strong> ${data.application.gpa}</p>
+                <p><strong>Graduation Year:</strong> ${data.application.graduation_year}</p>
+                ${data.application.resume_url ? 
+                    `<a href="${data.application.resume_url}" class="btn waves-effect waves-light" target="_blank">
                         View Resume
                     </a>` : ''
                 }
