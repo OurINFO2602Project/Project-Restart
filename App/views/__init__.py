@@ -3,6 +3,7 @@
 from .user import user_views
 from .index import index_views
 from .auth import auth_views
+from .student import student_views
 from .admin import setup_admin
 from flask import Blueprint, render_template, request, redirect, url_for
 from App.models import Internship, db, Application, Student, Internship
@@ -18,7 +19,8 @@ def login_landing():
 
 @login_landing_views.route('/student/home', methods=['GET'])
 def student_home():
-    return render_template('student_base.html')
+    internships = Internship.query.all()
+    return render_template('student.html', internships=internships)
 
 @login_landing_views.route('/company/home', methods=['GET', 'POST'])
 def company_home():
@@ -62,6 +64,7 @@ def company_shortlist():
 def staff_home():
     return render_template('staff_home.html')
 
+<<<<<<< Updated upstream
 @login_landing_views.route('/student.html')
 def student_html():
     return render_template('student.html')
@@ -71,4 +74,7 @@ def student_html():
 
 
 views = [user_views, index_views, auth_views, login_landing_views]
+=======
+views = [user_views, index_views, auth_views, login_landing_views, student_views]
+>>>>>>> Stashed changes
 # blueprints must be added to this list
