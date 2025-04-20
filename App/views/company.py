@@ -1,9 +1,14 @@
-from flask import render_template, request, redirect, url_for, flash
+from flask import render_template, request, redirect, url_for, flash, jsonify
 from flask_login import login_required, current_user
 from App.controllers.company import *
 from App.models.internship import Internship
 from App.models.shortlist import Shortlist
 from App.models.student import Student
+from flask import Blueprint
+from flask_jwt_extended import jwt_required
+
+# Define or import the blueprint
+company_blueprint = Blueprint('company', __name__)
 
 from App.controllers import(
     get_shortlisted_students,
@@ -18,7 +23,8 @@ def home():
   flash('Access denied.')
   return redirect(url_for('auth.login'))
  
- internships = App.controllers.company.get_company_internships(current_user.id)
+ from App.controllers.company import get_company_internships
+ internships = get_company_internships(current_user.id)
  return render_template('company1stpage.html', internships=internships, company = current_user)
 
 @company_blueprint.route('/internship/<int:internship_id>/shortlist')
@@ -54,7 +60,7 @@ def get_student_details(student_id):
         
     return jsonify(student)
 
-@company_views.route('/api/students/<int:student_id>/details', methods=['GET'])
+@company_blueprint.route('/api/students/<int:student_id>/details', methods=['GET'])
 @jwt_required()
 def get_student_application_details_api(student_id):
     if current_user.type != 'company':

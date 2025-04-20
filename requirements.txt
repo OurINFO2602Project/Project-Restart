@@ -17,3 +17,13 @@ Werkzeug==2.2.3
 gevent==22.10.2
 mysqlclient==2.1.1
 Flask-Admin==1.6.1
+flask
+flask-login
+flask-jwt-extended
+flask-sqlalchemy
+flask-migrate
+flask-admin
+flask-cors
+flask-reuploaded
+python-dotenv
+pytest
