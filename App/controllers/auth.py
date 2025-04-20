@@ -17,13 +17,13 @@ def setup_jwt(app):
   def user_identity_lookup(identity):
     user = User.query.filter_by(username=identity).one_or_none()
     if user:
-        return user.id
+        return str(user.id)  # Ensure this is a string
     return None
 
   @jwt.user_lookup_loader
   def user_lookup_callback(_jwt_header, jwt_data):
     identity = jwt_data["sub"]
-    return User.query.get(identity)
+    return User.query.get(int(identity))  # Convert back to int for lookup
 
   return jwt
 
