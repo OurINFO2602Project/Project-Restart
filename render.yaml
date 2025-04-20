@@ -9,6 +9,7 @@ services:
   healthCheckPath: /healthcheck
   buildCommand: "pip install -r requirements.txt"
   startCommand: "gunicorn wsgi:app"
+  postdeploy: "flask init"
   envVars:
   - fromGroup: flask-postgres-api-settings
   - key: POSTGRES_URL
