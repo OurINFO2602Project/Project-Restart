@@ -1,21 +1,27 @@
 from App.models import Staff
 from App import db
-from App.models import applicants
+from App.models import Application, shortlist
 
-def view_applicants():
-    applicants = applicants.query.all()
-    return applicants
+def get_pending_applications():
+    return Application.query.filter_by().all()
 
-def view_applicant(applicant_id):
-    applicant = applicants.query.filter_by(id=applicant_id).first()
-    if not applicant:
-        return None
-    return applicant
+def shortlist_student(internship_id, student_id, staff_id):
+        application = Application.query.filter_by(
+            internship_id=internship_id, 
+            student_id=student_id).first()
+        if application:
+            application.status = 'shortlisted'
+            db.session.add(application)
 
-def approve_applicant(applicant_id):
-    applicant = applicants.query.filter_by(id=applicant_id).first()
-    if not applicant:
-        return None
-    applicant.status = 'approved'
-    db.session.commit()
-    return applicant
+        shortlisted = shortlist(
+            internship_id=internship_id, 
+            student_id=student_id, 
+            staff_id=staff_id
+        )
+        db.session.add(shortlisted)
+        db.session.commit()
+        return True
+    return False
+
+def get_all_shortlists():
+     return shortlist.query.all()

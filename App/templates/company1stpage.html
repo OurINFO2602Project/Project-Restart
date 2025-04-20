@@ -12,9 +12,9 @@
    {% for student in shortlisted %}
    <div class="card mb-3">
     <div class="card-body">
-     <h5> class="card-title">{{ student.name }}</h5>
+     <h5 class="card-title">{{ student.name }}</h5>
      <p class="card-text">{{ student.degree }}
-      {% if student.gpa >= 3.8 %}(High Gpa){% endif %}
+      {% if student.gpa = 3.8 %}(High Gpa){% endif %}
      </p>
      <a href="{{ url_for('company_shortlists', intership_id = internship.id, selected=student.id) }}"
      class="btn btn-sm btn-outline-primary">View Details</a>

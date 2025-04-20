@@ -1,28 +1,22 @@
-from App.models import Company
+from App.models import Company, Internship, Application, shortlist  # Import the Company and Internship models
 from App.database import db
 
-def create_internship(company_id, internship_data):
-    company = Company.query.get(company_id)
-    if company:
-        internship = Internship(internship_data)
-        company.internships.append(internship)
-        db.session.add(internship)
-        db.session.commit()
-        return internship
-    return None
+def create_internship(company_id, title, description, start_date, end_date, salary):
+   internship = Internship(title=title,
+                           description=description,
+                           start_date=start_date,
+                           end_date=end_date,
+                           salary=salary,
+                           company_id=company_id)
+   db.session.add(internship)
+   db.session.commit()
+   return internship
+   
+def get_company_internships(company_id):
+   return Internship.query.filter_by(company_id=company_id).all()
 
-def Internship(internship_data):
-    from App.models import Internship  # Import the Internship model
+def get_internship_applications(internship_id):
+   return Application.query.filter_by(internship_id=internship_id).all()
 
-    # Create an internship object using the provided data
-    internship = Internship(internship_data)
-    return internship
-
-
-def view_applicants(internship_id):
-    from App.models import Internship  # Import the Internship model
-
-    internship = Internship.query.get(internship_id)
-    if internship:
-        return internship.applicants  # Assuming `applicants` is a relationship in the Internship model
-    return None
+def get_shortlisted_students(internship_id):
+   return shortlist.query.filter_by(internship_id=internship_id).all()

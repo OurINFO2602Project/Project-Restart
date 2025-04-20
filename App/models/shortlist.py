@@ -1,3 +1,6 @@
+from .user import User
+from App.database import db
+
 class Shortlist(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     internship_id = db.Column(db.Integer, db.ForeignKey('internship.id'), nullable=False)
