@@ -1,3 +1,55 @@
 html {
     padding: 0;
 }
+
+/* Shortlist Page Enhancements */
+.shortlist-container {
+  margin-top: 32px;
+  margin-bottom: 32px;
+}
+.shortlist-card, .details-card {
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f8f9fa;
+}
+.shortlist-list {
+  margin-top: 16px;
+}
+.shortlist-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #e0e0e0;
+  transition: background 0.2s;
+}
+.shortlist-item:last-child {
+  border-bottom: none;
+}
+.shortlist-link {
+  color: #00695c;
+  font-weight: 500;
+  text-decoration: none;
+  flex: 1;
+  transition: color 0.2s;
+}
+.shortlist-link:hover {
+  color: #004d40;
+  background: #e0f2f1;
+  border-radius: 6px;
+}
+.shortlist-btn {
+  margin-left: 16px;
+  transition: box-shadow 0.2s;
+}
+.shortlist-btn:hover {
+  box-shadow: 0 4px 12px rgba(0,105,92,0.15);
+}
+.details-card {
+  min-height: 300px;
+}
+@media (max-width: 992px) {
+  .shortlist-card, .details-card {
+    margin-bottom: 24px;
+  }
+}

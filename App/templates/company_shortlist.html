@@ -5,23 +5,24 @@
 {{ super() }}
 
 {% block content %}
-<div class="container">
+<div class="container shortlist-container">
     <!-- Left Column - Shortlist -->
     <div class="row">
         <div class="col s12 m6">
-            <div class="card">
+            <div class="card z-depth-3 shortlist-card">
                 <div class="card-content">
-                    <span class="card-title">Shortlist for Web Developer</span>
-                    <div class="collection">
+                    <span class="card-title teal-text text-darken-2" style="font-weight:600;">Shortlist for {{ internship.title }}</span>
+                    <div class="collection shortlist-list">
                         {% for student in shortlisted_students %}
-                            <a href="#" class="collection-item" onclick="showStudentDetails('{{ student.id }}')">
-                                {{ student.name }}
-                                <br>
-                                {{ student.degree }}
-                            </a>
-                            <button class="btn waves-effect waves-light" onclick="viewApplicationDetails('{{ student.id }}')">
-                                View Details
-                            </button>
+                            <div class="shortlist-item">
+                                <a href="#" class="collection-item shortlist-link" onclick="showStudentDetails('{{ student.id }}')">
+                                    <span class="shortlist-name">{{ student.name }}</span><br>
+                                    <span class="shortlist-degree">{{ student.degree }}</span>
+                                </a>
+                                <button class="btn-small waves-effect waves-light teal lighten-1 shortlist-btn" onclick="viewApplicationDetails('{{ student.id }}')">
+                                    <i class="material-icons left">visibility</i>Details
+                                </button>
+                            </div>
                         {% endfor %}
                     </div>
                 </div>
@@ -30,23 +31,23 @@
 
         <!-- Right Column - Student Details -->
         <div class="col s12 m6">
-            <div class="card">
+            <div class="card z-depth-3 details-card">
                 <div class="card-content">
-                    <span class="card-title">Selected Student</span>
+                    <span class="card-title teal-text text-darken-2" style="font-weight:600;">Selected Student</span>
                     <div id="studentDetails">
                         {% if selected_student %}
-                            <h4>{{ selected_student.name }}</h4>
+                            <h4 class="teal-text text-darken-3">{{ selected_student.name }}</h4>
                             <p><strong>Degree:</strong> {{ selected_student.degree }}</p>
                             <p><strong>Email:</strong> {{ selected_student.email }}</p>
                             <p><strong>GPA:</strong> {{ selected_student.gpa }}</p>
                             <p><strong>Graduation Year:</strong> {{ selected_student.graduation_year }}</p>
                             {% if selected_student.resume_url %}
-                                <a href="{{ selected_student.resume_url }}" class="btn waves-effect waves-light" target="_blank">
-                                    View Resume
+                                <a href="{{ selected_student.resume_url }}" class="btn waves-effect waves-light teal lighten-1" target="_blank">
+                                    <i class="material-icons left">description</i>View Resume
                                 </a>
                             {% endif %}
                         {% else %}
-                            <p>Select a student from the shortlist to view details</p>
+                            <p class="grey-text">Select a student from the shortlist to view details</p>
                         {% endif %}
                     </div>
                 </div>
@@ -62,14 +63,14 @@ function showStudentDetails(studentId) {
         .then(data => {
             const details = document.getElementById('studentDetails');
             details.innerHTML = `
-                <h4>${data.name}</h4>
+                <h4 class='teal-text text-darken-3'>${data.name}</h4>
                 <p><strong>Degree:</strong> ${data.degree}</p>
                 <p><strong>Email:</strong> ${data.email}</p>
                 <p><strong>GPA:</strong> ${data.gpa}</p>
                 <p><strong>Graduation Year:</strong> ${data.graduation_year}</p>
                 ${data.resume_url ? 
-                    `<a href="${data.resume_url}" class="btn waves-effect waves-light" target="_blank">
-                        View Resume
+                    `<a href="${data.resume_url}" class="btn waves-effect waves-light teal lighten-1" target="_blank">
+                        <i class='material-icons left'>description</i>View Resume
                     </a>` : ''
                 }
             `;
@@ -82,14 +83,14 @@ function viewApplicationDetails(studentId) {
         .then(data => {
             const details = document.getElementById('studentDetails');
             details.innerHTML = `
-                <h4>${data.student.name}</h4>
+                <h4 class='teal-text text-darken-3'>${data.student.name}</h4>
                 <p><strong>Degree:</strong> ${data.student.degree}</p>
                 <p><strong>Email:</strong> ${data.student.email}</p>
                 <p><strong>GPA:</strong> ${data.application.gpa}</p>
                 <p><strong>Graduation Year:</strong> ${data.application.graduation_year}</p>
                 ${data.application.resume_url ? 
-                    `<a href="${data.application.resume_url}" class="btn waves-effect waves-light" target="_blank">
-                        View Resume
+                    `<a href="${data.application.resume_url}" class="btn waves-effect waves-light teal lighten-1" target="_blank">
+                        <i class='material-icons left'>description</i>View Resume
                     </a>` : ''
                 }
             `;

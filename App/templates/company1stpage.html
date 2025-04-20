@@ -1,56 +1,64 @@
 {% extends "layout.html" %}
 {% block title %}Company Shortlist Page{% endblock %}
 {% block content %}
-<div class="container mt-4">
- <div class="d-flex justify-content-between align-items-center mb-4">
-  <h2>Shortlist for {{ internship.title }}</h2>
-  <span class="badge bg-primary"> Logged in as: {{internship.company }}</span>
-   <i class="bi bi-box-arrow-right">Logout</i>
- </div>
- <div class="row">
-  <div class="col-md-7">
-   {% for student in shortlisted %}
-   <div class="card mb-3">
-    <div class="card-body">
-     <h5 class="card-title">{{ student.name }}</h5>
-     <p class="card-text">{{ student.degree }}
-      {% if student.gpa == 3.8 %}(High Gpa){% endif %}
-     </p>
-     <a href="{{ url_for('login_landing_views.company_shortlist', internship_id=internship.id, selected=student.id) }}"
-     class="btn btn-sm btn-outline-primary">View Details</a>
+<div class="container" style="margin-top: 5%">
+  <div class="row">
+    <!-- Left: Create Internship Form -->
+    <div class="col s12 m5">
+      <h5>Create Internship</h5>
+      <form method="POST" action="/company/home">
+        <div class="input-field">
+          <input id="title" name="title" type="text" required>
+          <label for="title">Title</label>
+        </div>
+        <div class="input-field">
+          <select id="start_date" name="start_date" required class="browser-default">
+            <option value="" disabled selected>Choose start date</option>
+            {% for month in ['May 2025', 'June 2025', 'July 2025', 'August 2025'] %}
+            <option value="{{ month }}">{{ month }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="input-field">
+          <select id="end_date" name="end_date" required class="browser-default">
+            <option value="" disabled selected>Choose end date</option>
+            {% for month in ['July 2025', 'August 2025', 'September 2025', 'October 2025'] %}
+            <option value="{{ month }}">{{ month }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="input-field">
+          <input id="salary" name="salary" type="text" required>
+          <label for="salary">Salary</label>
+        </div>
+        <div class="input-field">
+          <textarea id="description" name="description" class="materialize-textarea" required></textarea>
+          <label for="description">Description</label>
+        </div>
+        <button type="submit" class="btn indigo">Add</button>
+      </form>
     </div>
-   </div>
-   {% else %}
-   <div class="alert alert-info">
-    No students shortlisted yet
-   </div>
-   {% endfor %}
-   <div class="col-md-5">
-    {% if selected_student %}
-    <div class="card">
-     <div class="card-header bg-primary text-white">
-      <h5 class="mb-0">Selected Student</h5>
-     </div>
-     <div class="card-body">
-      <h4>{{ selected_student.name }}</h4>
-      <p>Degree: {{ selected_student.degree }}</p>
-      <p>GPA: {{ selected_student.gpa }}</p>
-      <ul class="list-group list-group-flush mt-3">
-       <li class="list-group-item">
-        <strong>Email: </strong> {{ selected_student.email }}
-       </li>
-       <li class="list-group-item">
-        <strong>GPA: </strong> {{ selected_student.gpa }}
-       </li>
-       <li class="list-group-item">
-        <a href="{{ selected_student.resume_url }}" class="btn btn-sm btn-secondary">
-         View Resume</a>
-       </li>
-       </ul>
-     </div>
-   </div>
-   {% endif %}
+    <!-- Right: Positions (Internships) List -->
+    <div class="col s12 m7">
+      <h5>Positions (Internships)</h5>
+      <ul class="collection">
+        {% for internship in internships %}
+        <li class="collection-item" style="padding: 2rem 1rem; font-size: 1.2rem;">
+          <div>
+            <strong>{{ internship.title }}</strong> <br>
+            <span>Start: {{ internship.start_date }} | End: {{ internship.end_date }}</span><br>
+            <span>Salary: {{ internship.salary }}</span><br>
+            <span>{{ internship.description }}</span>
+            <form method="GET" action="{{ url_for('login_landing_views.company_shortlist', internship_id=internship.id) }}" style="margin-top: 1rem;">
+              <button type="submit" class="btn teal">Select</button>
+            </form>
+          </div>
+        </li>
+        {% else %}
+        <li class="collection-item">No internships yet.</li>
+        {% endfor %}
+      </ul>
+    </div>
   </div>
- </div>
 </div>
 {% endblock %}
