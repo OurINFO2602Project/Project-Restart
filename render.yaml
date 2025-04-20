@@ -8,8 +8,7 @@ services:
   branch: main
   healthCheckPath: /healthcheck
   buildCommand: "pip install -r requirements.txt"
-  startCommand: "gunicorn wsgi:app"
-  postdeploy: "flask db upgrade"
+  startCommand: "flask init && gunicorn wsgi:app"
   envVars:
   - fromGroup: flask-postgres-api-settings
   - key: POSTGRES_URL
