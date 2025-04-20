@@ -3,7 +3,8 @@ from flask_jwt_extended import jwt_required, current_user
 
 from App.controllers import(
     get_shortlisted_students,
-    get_student_details
+    get_student_details,
+    get_student_application_details
 )
 
 company_views = Blueprint('company_views', __name__, template_folder='../templates')
@@ -32,3 +33,22 @@ def get_student_details_api(student_id):
         return jsonify({"error": "Student not found"}), 404
         
     return jsonify(student)
+
+@company_views.route('/api/students/<int:student_id>/details', methods=['GET'])
+@jwt_required()
+def get_student_application_details_api(student_id):
+    if current_user.type != 'company':
+        return jsonify({"error": "Unauthorized"}), 401
+
+    student_details = get_student_details(student_id)
+    if not student_details:
+        return jsonify({"error": "Student not found"}), 404
+
+    application_details = get_student_application_details(student_id)  # Fetch application-specific details
+    if not application_details:
+        return jsonify({"error": "Application details not found"}), 404
+
+    return jsonify({
+        "student": student_details,
+        "application": application_details
+    })
