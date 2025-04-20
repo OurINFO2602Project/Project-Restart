@@ -5,15 +5,11 @@ from App.models.internship import Internship
 from App.models.shortlist import Shortlist
 from App.models.student import Student
 
-<<<<<<< HEAD
-company_blueprint = Blueprint('company', __name__)
-=======
 from App.controllers import(
     get_shortlisted_students,
     get_student_details,
     get_student_application_details
 )
->>>>>>> 0941f3955f92ad6ffaecdb05564aa457c9175c40
 
 @company_blueprint.route('/home', methods=['GET'])
 @login_required
@@ -54,23 +50,6 @@ def get_student_details(student_id):
     
     student = Student.query.get(student_id)
     if not student:
-<<<<<<< HEAD
-        return {'error': 'Student not found'}, 404
-    
-    application = Application.query.filter_by(
-        student_id=student_id
-    ).first()
-    
-    return {
-        'id': student.id,
-        'name': f"{student.first_name} {student.last_name}",
-        'email': student.email,
-        'degree': application.degree if application else 'N/A',
-        'gpa': application.gpa if application else 0.0,
-        'graduation_year': application.graduation_year if application else 0,
-        'resume_url': application.resume_url if application else ''
-    }
-=======
         return jsonify({"error": "Student not found"}), 404
         
     return jsonify(student)
@@ -93,4 +72,3 @@ def get_student_application_details_api(student_id):
         "student": student_details,
         "application": application_details
     })
->>>>>>> 0941f3955f92ad6ffaecdb05564aa457c9175c40
