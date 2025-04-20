@@ -5,7 +5,8 @@ from flask_jwt_extended import jwt_required, current_user, unset_jwt_cookies, se
 from.index import index_views
 
 from App.controllers import (
-    login
+    login,
+    get_all_users
 )
 
 auth_views = Blueprint('auth_views', __name__, template_folder='../templates')
@@ -31,12 +32,13 @@ def identify_page():
 def login_action():
     data = request.form
     token = login(data['username'], data['password'])
-    response = redirect(request.referrer)
     if not token:
         flash('Bad username or password given'), 401
+        response = redirect(request.referrer)
     else:
         flash('Login Successful')
-        set_access_cookies(response, token) 
+        response = redirect('/login')  # Redirect to landing page after login
+        set_access_cookies(response, token)
     return response
 
 @auth_views.route('/logout', methods=['GET'])

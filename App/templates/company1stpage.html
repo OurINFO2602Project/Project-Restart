@@ -1,4 +1,4 @@
-{% extends layout.html %}
+{% extends "layout.html" %}
 {% block title %}Company Shortlist Page{% endblock %}
 {% block content %}
 <div class="container mt-4">
@@ -14,9 +14,9 @@
     <div class="card-body">
      <h5 class="card-title">{{ student.name }}</h5>
      <p class="card-text">{{ student.degree }}
-      {% if student.gpa = 3.8 %}(High Gpa){% endif %}
+      {% if student.gpa == 3.8 %}(High Gpa){% endif %}
      </p>
-     <a href="{{ url_for('company_shortlists', intership_id = internship.id, selected=student.id) }}"
+     <a href="{{ url_for('login_landing_views.company_shortlist', internship_id=internship.id, selected=student.id) }}"
      class="btn btn-sm btn-outline-primary">View Details</a>
     </div>
    </div>
@@ -24,7 +24,7 @@
    <div class="alert alert-info">
     No students shortlisted yet
    </div>
-   {% end for %}
+   {% endfor %}
    <div class="col-md-5">
     {% if selected_student %}
     <div class="card">
@@ -49,7 +49,7 @@
        </ul>
      </div>
    </div>
-   {% end if %}
+   {% endif %}
   </div>
  </div>
 </div>
