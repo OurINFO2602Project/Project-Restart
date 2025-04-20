@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+{% block title %}Student Dashboard{% endblock %}
+{% block page %}Logged in as: {{ current_user.username }}{% endblock %}
+
+{% block content %}
+<main class="row">
+    <section class="col s8">
+      <div class="row" style="overflow-y: scroll; height:75vh; margin:10px">
+        <h2>Available Internships</h2>
+        <ul>
+          {% for internship in internships %}
+            <li class="collection-item">
+                <div class="col s12 m6 l4">
+                    <div class="card">
+                      <div class="card-content">
+                        <span class="card-title">{{ internship.title }}</span>
+                        <p>Company: {{ internship.company.company_name }}</p>
+                        <p>{{ internship.start_date }} TO {{ internship.end_date }}</p>
+                        <p>Salary: {{ internship.salary }}</p>
+                        <p>{{ internship.description }}</p>
+                      </div>
+                      <div class="card-action">
+                        <a href="{{ url_for('student_views.show_application_form', internship_id=internship.id) }}" class="btn">Apply</a>
+                      </div>
+                    </div>
+                  </div>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </section>
+
+    <section class="col s4" >
+      <ul class="collection with-header" style="overflow-y: scroll; height:85vh; margin:10px">
+        {% if internship %}
+          <li class="collection-header"><h2>Apply to {{ internship.title }}</h2></li>
+          <form method="POST" action="/apply/{{internship_id}}">
+            <label for="degree">Degree:</label>
+            <input type="text" name="degree" required><br>
+        
+            <label for="gpa">GPA:</label>
+            <input type="number" step="0.01" name="gpa" required><br>
+        
+            <label for="graduation_year">Graduation Year:</label>
+            <input type="number" name="graduation_year" required><br>
+        
+            <label for="resume_url">Resume URL:</label>
+            <input type="url" name="resume_url" required><br>
+        
+            <button type="submit">Submit</button>
+          </form>
+        {% else %}
+          <li class="collection-header"><h2>Select an internship to apply</h2></li>
+        {% endif %}
+    </section>
+  </main>
+{% endblock %}
