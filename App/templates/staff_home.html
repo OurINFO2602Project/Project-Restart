@@ -1,60 +1,69 @@
 {% extends "layout.html" %}
 
-{% block sidebar %}
-    <h4>Logged in as: Staff</h4>
-    <a href="{{ url_for('logout') }}" class="btn btn-sm btn-outline-secondary mb-4">Logout</a>
-
-    <h5 class="mt-4">Applications</h5>
-    <div class="dropdown mb-3">
-        <button class="btn btn-light dropdown-toggle" type="button" id="positionDropdown" data-bs-toggle="dropdown">
-            Web Developer ▼
-        </button>
-        <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Web Developer</a></li>
-            <!-- Add other positions here -->
-        </ul>
+{% block content %}
+<div class="container" style="margin-top: 2rem;">
+  <div class="row">
+    <!-- Sidebar: Internship Dropdown & Applicants List -->
+    <div class="col s12 m4">
+      <h5>Internships</h5>
+      <form method="get" id="internshipForm">
+        <div class="input-field">
+          <select name="internship_id" id="internshipDropdown" class="browser-default" onchange="document.getElementById('internshipForm').submit();">
+            {% for internship in internships %}
+              <option value="{{ internship.id }}" {% if selected_internship and internship.id == selected_internship.id %}selected{% endif %}>
+                {{ internship.title }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+      </form>
+      <h6 class="mt-4">Applicants</h6>
+      <ul class="collection">
+        {% for applicant in applicants %}
+          <li class="collection-item" style="display: flex; justify-content: space-between; align-items: center;">
+            <span>{{ applicant.student.first_name }} {{ applicant.student.last_name }}</span>
+            <form method="get" style="margin:0;">
+              <input type="hidden" name="internship_id" value="{{ selected_internship.id }}">
+              <input type="hidden" name="applicant_id" value="{{ applicant.id }}">
+              <button type="submit" class="btn-small teal">View Details</button>
+            </form>
+          </li>
+        {% else %}
+          <li class="collection-item">No applicants for this internship.</li>
+        {% endfor %}
+      </ul>
     </div>
 
-    {% for applicant in applicants.values() %}
-        <div class="card mb-2 applicant-card {% if selected_applicant and selected_applicant.id == applicant.id %}selected{% endif %}" 
-             onclick="window.location.href='{{ url_for('view_applicant', applicant_id=applicant.id) }}'">
-            <div class="card-body">
-                <h6>{{ applicant.name }}</h6>
-                <p class="mb-1">{{ applicant.position }}</p>
-                <a href="{{ url_for('view_applicant', applicant_id=applicant.id) }}" class="btn btn-sm btn-outline-primary">View Details</a>
-            </div>
-        </div>
-    {% endfor %}
-{% endblock %}
-
-{% block content %}
-    {% if selected_applicant %}
-        <h4>Selected Applicant</h4>
+    <!-- Main Content: Applicant Details -->
+    <div class="col s12 m8">
+      {% if selected_applicant %}
         <div class="card">
-            <div class="card-body">
-                <h5>{{ selected_applicant.name }}</h5>
-                <p>{{ selected_applicant.degree }}</p>
-                <ul class="list-unstyled">
-                    <li>GPA: {{ selected_applicant.gpa }}</li>
-                    <li>Graduation Year: {{ selected_applicant.graduation_year }}</li>
-                    <li>
-                        <a href="/resumes/{{ selected_applicant.resume_file }}" class="btn btn-sm btn-outline-secondary">
-                            Resume File
-                        </a>
-                    </li>
-                </ul>
-                <div class="mt-3">
-                    <a href="{{ url_for('shortlist', applicant_id=selected_applicant.id) }}" 
-                       class="btn btn-sm {% if selected_applicant.shortlisted %}btn-success{% else %}btn-outline-success{% endif %}">
-                        {% if selected_applicant.shortlisted %}Shortlisted{% else %}Shortlist{% endif %}
-                    </a>
-                    <a href="{{ url_for('remove', applicant_id=selected_applicant.id) }}" class="btn btn-sm btn-outline-danger ms-2">Remove</a>
-                </div>
-            </div>
+          <div class="card-content">
+            <span class="card-title">{{ selected_applicant.student.first_name }} {{ selected_applicant.student.last_name }}</span>
+            <p><strong>Degree:</strong> {{ selected_applicant.degree }}</p>
+            <p><strong>GPA:</strong> {{ selected_applicant.gpa }}</p>
+            <p><strong>Graduation Year:</strong> {{ selected_applicant.graduation_year }}</p>
+            <p><strong>Email:</strong> {{ selected_applicant.student.email }}</p>
+            {% if selected_applicant.resume_url %}
+              <a href="{{ selected_applicant.resume_url }}" class="btn waves-effect waves-light teal lighten-1" target="_blank">
+                <i class="material-icons left">description</i>View Resume
+              </a>
+            {% endif %}
+          </div>
+          <div class="card-action">
+            <a href="{{ url_for('shortlist', applicant_id=selected_applicant.id) }}" 
+               class="btn {% if selected_applicant.shortlisted %}green{% else %}teal{% endif %}">
+              {% if selected_applicant.shortlisted %}Shortlisted{% else %}Shortlist{% endif %}
+            </a>
+            <a href="{{ url_for('remove', applicant_id=selected_applicant.id) }}" class="btn red lighten-1">Remove</a>
+          </div>
         </div>
-    {% else %}
-        <div class="alert alert-info">
-            Select an applicant from the sidebar to view details
+      {% else %}
+        <div class="card-panel grey lighten-3">
+          <span>Select an applicant to view details.</span>
         </div>
-    {% endif %}
+      {% endif %}
+    </div>
+  </div>
+</div>
 {% endblock %}
