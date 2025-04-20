@@ -64,17 +64,10 @@ def company_shortlist():
 def staff_home():
     return render_template('staff_home.html')
 
-<<<<<<< Updated upstream
+
 @login_landing_views.route('/student.html')
 def student_html():
     return render_template('student.html')
 
 
-
-
-
-views = [user_views, index_views, auth_views, login_landing_views]
-=======
 views = [user_views, index_views, auth_views, login_landing_views, student_views]
->>>>>>> Stashed changes
-# blueprints must be added to this list
