@@ -2,6 +2,8 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
 from App.controllers.staff import *
 from App.models import Application, Student
+import App
+from App.models.shortlist import Shortlist
 
 staff_blueprint = Blueprint('staff', __name__, url_prefix='/staff')
 
