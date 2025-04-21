@@ -8,7 +8,6 @@ from App import db
 student_views = Blueprint('student_views', __name__, template_folder='../templates')
 
 @student_views.route('/apply/<int:internship_id>', methods=['GET', 'POST'])
-@jwt_required()
 def apply_to_internship(internship_id):
     internship = Internship.query.get(internship_id)
     if request.method == 'POST':
