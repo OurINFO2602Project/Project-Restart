@@ -36,6 +36,12 @@
         {% if selected_internship %}
           <li class="collection-header">Apply to {{ selected_internship.title }}</li>
           <form method="POST" action="{{ url_for('student_views.apply_to_internship', internship_id=selected_internship.id) }}">
+            <label for="name">Name:</label>
+            <input type="text" name="name" required><br>
+
+            <label for="email">Email:</label>
+            <input type="email" name="email" required><br>
+            
             <label for="degree">Degree:</label>
             <input type="text" name="degree" required><br>
         
