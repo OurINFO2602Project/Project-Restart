@@ -85,10 +85,4 @@ def staff_home():
     )
 
 
-
-@login_landing_views.route('/student.html')
-def student_html():
-    return render_template('student.html')
-
-
 views = [user_views, index_views, auth_views, login_landing_views, student_views]
