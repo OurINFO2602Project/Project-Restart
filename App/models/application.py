@@ -14,7 +14,9 @@ class Application(db.Model):
   student = db.relationship('Student', backref=db.backref('applications', lazy=True))
   internship = db.relationship('Internship', backref=db.backref('applications', lazy=True))
 
-  def __init__(self, internship, student, degree, gpa, graduation_year, url="https://file.pdf"):
+  def __init__(self, name, email, internship, student, degree, gpa, graduation_year, url="https://file.pdf"):
+    self.name = name
+    self.email = email
     self.internship = internship
     self.student = student
     self.degree = degree
