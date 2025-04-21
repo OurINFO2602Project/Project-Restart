@@ -12,6 +12,8 @@ student_views = Blueprint('student_views', __name__, template_folder='../templat
 def apply_to_internship(internship_id):
     internship = Internship.query.get(internship_id)
     if request.method == 'POST':
+        name = request.form['name']
+        email = request.form['email']
         degree = request.form['degree']
         gpa = float(request.form['gpa'])
         graduation_year = int(request.form['graduation_year'])
@@ -19,7 +21,8 @@ def apply_to_internship(internship_id):
 
         application = create_application(
             internship_id=internship_id,
-            student_id=current_user.id,
+            name=name,
+            email=email,
             degree=degree,
             gpa=gpa,
             graduation_year=graduation_year,
@@ -30,5 +33,5 @@ def apply_to_internship(internship_id):
         return redirect(url_for('student_views.apply_to_internship', internship_id=internship_id))
     
     elif request.method == 'GET':
-        return render_template('student.html', internships=Internship.query.all(), current_user=current_user, selected_internship=internship)
+        return render_template('student.html', internships=Internship.query.all(), selected_internship=internship)
 
